@@ -1,0 +1,27 @@
+# dune build
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Shared cache location: /Users/aaravbhatt/.cache/dune/db
+# Workspace root: /Users/aaravbhatt/Code/Html2Markdown
+# Auto-detected concurrency: 8
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; instrument_with = []
+#  }
+$ /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -config > /var/folders/62/hc79thkd5d17f4fplqdchx040000gn/T/dune_ffef5c_output
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamldep.opt -modules -intf lib/tokenizer.mli) > _build/default/lib/.Html2Markdown.objs/html2Markdown__Tokenizer.intf.d
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamldep.opt -modules -impl lib/tokenizer.ml) > _build/default/lib/.Html2Markdown.objs/html2Markdown__Tokenizer.impl.d
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -bin-annot-occurrences -I lib/.Html2Markdown.objs/byte -no-alias-deps -opaque -open Html2Markdown -o lib/.Html2Markdown.objs/byte/html2Markdown__Tokenizer.cmi -c -intf lib/tokenizer.mli)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -bin-annot-occurrences -I bin/.main.eobjs/byte -I lib/.Html2Markdown.objs/byte -no-alias-deps -opaque -o bin/.main.eobjs/byte/dune__exe__Main.cmi -c -intf bin/main.mli)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -bin-annot-occurrences -I lib/.Html2Markdown.objs/byte -intf-suffix .ml -no-alias-deps -opaque -open Html2Markdown -o lib/.Html2Markdown.objs/byte/html2Markdown__Tokenizer.cmo -c -impl lib/tokenizer.ml)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o lib/Html2Markdown.cma lib/.Html2Markdown.objs/byte/html2Markdown.cmo lib/.Html2Markdown.objs/byte/html2Markdown__Tokenizer.cmo)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I bin/.main.eobjs/byte -I bin/.main.eobjs/native -I lib/.Html2Markdown.objs/byte -I lib/.Html2Markdown.objs/native -intf-suffix .ml -no-alias-deps -opaque -o bin/.main.eobjs/native/dune__exe__Main.cmx -c -impl bin/main.ml)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I lib/.Html2Markdown.objs/byte -I lib/.Html2Markdown.objs/native -intf-suffix .ml -no-alias-deps -opaque -open Html2Markdown -o lib/.Html2Markdown.objs/native/html2Markdown__Tokenizer.cmx -c -impl lib/tokenizer.ml)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o lib/Html2Markdown.cmxa lib/.Html2Markdown.objs/native/html2Markdown.cmx lib/.Html2Markdown.objs/native/html2Markdown__Tokenizer.cmx)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -shared -linkall -I lib -o lib/Html2Markdown.cmxs lib/Html2Markdown.cmxa)
+$ (cd _build/default && /Users/aaravbhatt/.opam/default/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe lib/Html2Markdown.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)

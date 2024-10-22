@@ -1,0 +1,4 @@
+(executable
+ (public_name Html2Markdown)
+ (name main)
+ (libraries Html2Markdown))
