@@ -24,12 +24,29 @@ module MarkdownLineStarter = struct
     Format.fprintf fmt "%s" (to_string v)
 end
 
-type markdownText =
-  | NormalText of string
-  | BoldText of string
-  | ItalicText of string
+module MarkdownText = struct
+  type t =
+    | NormalText of string
+    | BoldText of string
+    | ItalicText of string
 
-type markdownLine = MarkdownLine of MarkdownLineStarter.t option * markdownText list
+  let to_string = function
+    | NormalText s -> "NormalText(" ^ s ^ ")"
+    | BoldText s -> "BoldText(" ^ s ^ ")"
+    | ItalicText s -> "ItalicText(" ^ s ^ ")"
+
+  let equal a b =
+    match a, b with
+    | NormalText s1, NormalText s2 -> s1 = s2
+    | BoldText s1, BoldText s2 -> s1 = s2
+    | ItalicText s1, ItalicText s2 -> s1 = s2
+    | _, _ -> false
+
+  let pp fmt v =
+    Format.fprintf fmt "%s" (to_string v)
+end
+
+type markdownLine = MarkdownLine of MarkdownLineStarter.t option * MarkdownText.t list
 
 (* This function gets the markdownLineStarter of the line *)
 let parseLineStart = function
@@ -76,3 +93,12 @@ let tokenizeText text =
     | x :: xn -> x :: combine xn
     | [] -> []
   in text |> tokenize |> combine
+
+let rec parseTokens =
+  let open TextToken
+  in function
+    | BoldToken :: RegularTextToken t :: BoldToken :: xn -> MarkdownText.BoldText t :: parseTokens xn
+    | ItalicToken :: RegularTextToken t :: ItalicToken :: xn -> MarkdownText.ItalicText t :: parseTokens xn
+    | RegularTextToken t :: xn -> MarkdownText.NormalText t :: parseTokens xn
+    | [] -> []
+    | _ -> failwith "Parsing Error"

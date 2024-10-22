@@ -86,9 +86,35 @@ module TokenizeTextTests = struct
   ]
 end
 
+module ParseLineTests = struct
+  open MarkdownText
+  open TextToken
+
+  let input1 = [RegularTextToken "This is some normal text"]
+  let input2 = [RegularTextToken "This is some "; BoldToken; RegularTextToken "bold"; BoldToken; RegularTextToken " text"]
+  let input3 = [RegularTextToken "This is some "; ItalicToken; RegularTextToken "italic"; ItalicToken; RegularTextToken " text"]
+
+  let expOutput1 = [NormalText "This is some normal text"]
+  let expOutput2 = [NormalText "This is some "; BoldText "bold"; NormalText " text"]
+  let expOutput3 = [NormalText "This is some "; ItalicText "italic"; NormalText " text"]
+
+  let testable_markdownText = testable MarkdownText.pp MarkdownText.equal
+
+  let test1 () = check (Alcotest.list testable_markdownText) "Regular" expOutput1 (parseTokens input1)
+  let test2 () = check (Alcotest.list testable_markdownText) "Bold" expOutput2 (parseTokens input2)
+  let test3 () = check (Alcotest.list testable_markdownText) "Italic" expOutput3 (parseTokens input3)
+
+  let tests = [
+    "Parse regular text", `Quick, test1;
+    "Parse bold text", `Quick, test2;
+    "Parse italic text", `Quick, test3;
+  ]
+end
+
 let () =
   run "Html2Markdown Tests" [
     "Getting the first line", GetFirstLineTests.tests;
     "Checking if it can parse how the line starts", ParseLineStartTests.tests;
     "Checking if text can be tokenized correctly", TokenizeTextTests.tests;
+    "Checking if tokenized text can be parsed correctly", ParseLineTests.tests;
   ]
