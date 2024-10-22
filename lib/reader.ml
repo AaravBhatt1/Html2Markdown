@@ -41,3 +41,38 @@ let parseLineStart = function
     in Some (MarkdownLineStarter.Header headerVal), restOfLine
   | '-' :: xn -> Some (MarkdownLineStarter.UnorderedListItem), xn
   | xn -> None, xn
+
+module TextToken = struct
+  type t =
+    | RegularTextToken of string
+    | BoldToken
+    | ItalicToken
+
+  let to_string = function
+    | RegularTextToken s -> "RegularTextToken(" ^ s ^ ")"
+    | BoldToken -> "BoldToken"
+    | ItalicToken -> "ItalicToken"
+
+  let equal a b =
+    match a, b with
+    | RegularTextToken s1, RegularTextToken s2 -> s1 = s2
+    | BoldToken, BoldToken -> true
+    | ItalicToken, ItalicToken -> true
+    | _, _ -> false
+
+  let pp fmt v =
+    Format.fprintf fmt "%s" (to_string v)
+end
+
+(* This function should tokenize the text in the line *)
+let tokenizeText text =
+  let rec tokenize = function
+    | '*' :: '*' :: xn -> TextToken.ItalicToken :: tokenize xn
+    | '*' :: xn -> TextToken.BoldToken :: tokenize xn
+    | x :: xn -> TextToken.RegularTextToken (Char.escaped x) :: tokenize xn
+    | [] -> []
+  in let rec combine = function
+    | TextToken.RegularTextToken a :: TextToken.RegularTextToken b :: xn -> combine (TextToken.RegularTextToken (a ^ b) :: xn)
+    | x :: xn -> x :: combine xn
+    | [] -> []
+  in text |> tokenize |> combine
