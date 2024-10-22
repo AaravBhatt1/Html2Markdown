@@ -1,2 +1,4 @@
 (test
- (name test_Html2Markdown))
+ (name test)
+ (libraries Html2Markdown alcotest)
+ )
