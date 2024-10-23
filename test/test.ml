@@ -1,5 +1,5 @@
 open Alcotest
-open Html2Markdown.Reader
+open Markdown2Html.Reader
 
 (* Testing Getting First Line *)
 module GetFirstLineTests = struct
@@ -170,7 +170,7 @@ module ConvertSeqCharToSeqLineTests = struct
 end
 
 let () =
-  run "Html2Markdown Tests" [
+  run "Markdown2Html Tests" [
     "Getting the first line", GetFirstLineTests.tests;
     "Checking if it can parse how the line starts", ParseLineStartTests.tests;
     "Checking if text can be tokenized correctly", TokenizeTextTests.tests;

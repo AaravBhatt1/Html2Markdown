@@ -14,6 +14,7 @@ module HtmlToken = struct
     | UnorderedList of bool
     | NewLine
 
+  (* Convert HtmlToken to its string representation *)
   let to_string = function
     | Text s -> s
     | Header (n, true) -> "<h" ^ string_of_int n ^ ">"
@@ -30,19 +31,23 @@ module HtmlToken = struct
     | Paragraph true -> "<p>"
     | Paragraph false -> "</p>"
 
+  (* Check equality of two HtmlTokens *)
   let equal a b = a = b
 
+  (* Pretty print an HtmlToken *)
   let pp fmt t =
     Format.fprintf fmt "%s" (to_string t)
 end
 
 (* TODO: Write unit tests for this *)
+(* Convert MarkdownText to a list of HtmlTokens *)
 let convertTextToHtmlToken = let open HtmlToken in function
   | NormalText text -> [Text text]
   | BoldText text -> [Bold true; Text text; Bold false]
   | ItalicText text -> [Italics true; Text text; Italics false]
 
 (* TODO: Write unit tests for this *)
+(* Convert a MarkdownLine to a list of HtmlTokens *)
 let convertMarkdownLine =
   let open HtmlToken in
   let convert = List.concat_map convertTextToHtmlToken
@@ -54,6 +59,7 @@ let convertMarkdownLine =
 (* TODO: Write unit tests for this *)
 (* TODO: Convert the optional argument into its own state type *)
 (* TODO: Break this down into smaller functions if possible *)
+(* Recursively convert a sequence of MarkdownLines to a sequence of HtmlToken lists *)
 let rec convertLinesToTokens ?(unorderedList = false) seq = let open HtmlToken in
   match seq () with
   | Seq.Nil -> if unorderedList then Seq.cons [UnorderedList false] Seq.empty else Seq.empty
@@ -68,6 +74,7 @@ let rec convertLinesToTokens ?(unorderedList = false) seq = let open HtmlToken i
       if unorderedList then Seq.cons [UnorderedList false] convertedLines
       else convertedLines
 
+(* Convert a sequence of MarkdownLines to a sequence of HTML strings *)
 let convertLines lines =
     let convertSingleLine line = String.concat "" (List.map HtmlToken.to_string line)
     in Seq.map convertSingleLine (convertLinesToTokens lines)

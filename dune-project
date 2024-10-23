@@ -1,6 +1,6 @@
 (lang dune 3.16)
 
-(name Html2Markdown)
+(name Markdown2Html)
 
 (generate_opam_files true)
 
@@ -16,7 +16,7 @@
 (documentation https://url/to/documentation)
 
 (package
- (name Html2Markdown)
+ (name Markdown2Html)
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends ocaml dune)

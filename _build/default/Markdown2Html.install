@@ -1,0 +1,12 @@
+lib: [
+  "_build/install/default/lib/Markdown2Html/META"
+  "_build/install/default/lib/Markdown2Html/dune-package"
+  "_build/install/default/lib/Markdown2Html/opam"
+]
+bin: [
+  "_build/install/default/bin/Markdown2Html"
+]
+doc: [
+  "_build/install/default/doc/Markdown2Html/README.html"
+  "_build/install/default/doc/Markdown2Html/README.md"
+]

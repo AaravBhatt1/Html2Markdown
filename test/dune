@@ -1,4 +1,4 @@
 (test
  (name test)
- (libraries Html2Markdown alcotest)
+ (libraries Markdown2Html alcotest)
  )

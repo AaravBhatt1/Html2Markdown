@@ -1,4 +1,4 @@
-# Html2Markdown (unfinished)
+# Markdown2Html (unfinished)
 ## Overview
 This is a project I've made to help me learn OCaml, which I am studying at university.
 It takes in a markdown file and then converts it to HTML code.

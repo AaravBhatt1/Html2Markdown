@@ -1,4 +1,4 @@
 (library
- (name Html2Markdown)
+ (name Markdown2Html)
  (modules Reader Writer)
  )
