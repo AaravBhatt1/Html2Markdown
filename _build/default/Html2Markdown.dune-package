@@ -1,4 +1,7 @@
 (lang dune 3.16)
 (name Html2Markdown)
-(sections (lib .) (bin ../../bin))
-(files (lib (META dune-package opam)) (bin (Html2Markdown)))
+(sections (lib .) (bin ../../bin) (doc ../../doc/Html2Markdown))
+(files
+ (lib (META dune-package opam))
+ (bin (Html2Markdown))
+ (doc (README.html README.md)))

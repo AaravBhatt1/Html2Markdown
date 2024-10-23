@@ -6,3 +6,7 @@ lib: [
 bin: [
   "_build/install/default/bin/Html2Markdown"
 ]
+doc: [
+  "_build/install/default/doc/Html2Markdown/README.html"
+  "_build/install/default/doc/Html2Markdown/README.md"
+]

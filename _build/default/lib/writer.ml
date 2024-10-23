@@ -2,41 +2,49 @@ open Reader
 open Reader.MarkdownText
 open Reader.MarkdownLine
 
-(* true means start, false means end *)
-type htmlToken =
-  | Paragraph of bool
-  | Text of string
-  | Header of int * bool
-  | Bold of bool
-  | Italics of bool
-  | ListItem of bool
-  | UnorderedList of bool
-  | NewLine
+module HtmlToken = struct
+  (* true means start, false means end *)
+  type t =
+    | Paragraph of bool
+    | Text of string
+    | Header of int * bool
+    | Bold of bool
+    | Italics of bool
+    | ListItem of bool
+    | UnorderedList of bool
+    | NewLine
 
-let htmlTokenToString = function
-  | Text s -> s
-  | Header (n, true) -> "<h" ^ string_of_int n ^ ">"
-  | Header (n, false) -> "</h" ^ string_of_int n ^ ">"
-  | Bold true -> "<strong>"
-  | Bold false -> "</strong>"
-  | Italics true -> "<em>"
-  | Italics false -> "</em>"
-  | ListItem true -> "<li>"
-  | ListItem false -> "</li>"
-  | UnorderedList true -> "<ul>"
-  | UnorderedList false -> "</ul>"
-  | NewLine -> "\n"
-  | Paragraph true -> "<p>"
-  | Paragraph false -> "</p>"
+  let to_string = function
+    | Text s -> s
+    | Header (n, true) -> "<h" ^ string_of_int n ^ ">"
+    | Header (n, false) -> "</h" ^ string_of_int n ^ ">"
+    | Bold true -> "<strong>"
+    | Bold false -> "</strong>"
+    | Italics true -> "<em>"
+    | Italics false -> "</em>"
+    | ListItem true -> "<li>"
+    | ListItem false -> "</li>"
+    | UnorderedList true -> "<ul>"
+    | UnorderedList false -> "</ul>"
+    | NewLine -> "\n"
+    | Paragraph true -> "<p>"
+    | Paragraph false -> "</p>"
+
+  let equal a b = a = b
+
+  let pp fmt t =
+    Format.fprintf fmt "%s" (to_string t)
+end
 
 (* TODO: Write unit tests for this *)
-let convertTextToHtmlToken = function
+let convertTextToHtmlToken = let open HtmlToken in function
   | NormalText text -> [Text text]
   | BoldText text -> [Bold true; Text text; Bold false]
   | ItalicText text -> [Italics true; Text text; Italics false]
 
 (* TODO: Write unit tests for this *)
 let convertMarkdownLine =
+  let open HtmlToken in
   let convert = List.concat_map convertTextToHtmlToken
   in function
   | MarkdownLine (None, l) -> (Paragraph true) :: convert l @ [Paragraph false]
@@ -44,7 +52,10 @@ let convertMarkdownLine =
   | MarkdownLine (Some MarkdownLineStarter.UnorderedListItem , l) -> ListItem true :: convert l @ [ListItem false]
 
 (* TODO: Write unit tests for this *)
-let rec convertLinesToTokens ?(unorderedList = false) seq = match seq () with
+(* TODO: Convert the optional argument into its own state type *)
+(* TODO: Break this down into smaller functions if possible *)
+let rec convertLinesToTokens ?(unorderedList = false) seq = let open HtmlToken in
+  match seq () with
   | Seq.Nil -> if unorderedList then Seq.cons [UnorderedList false] Seq.empty else Seq.empty
   | Seq.Cons (line, rest) ->
     let convertedLines = Seq.cons (convertMarkdownLine line) (Seq.cons [NewLine] (convertLinesToTokens rest))
@@ -58,5 +69,5 @@ let rec convertLinesToTokens ?(unorderedList = false) seq = match seq () with
       else convertedLines
 
 let convertLines lines =
-    let convertSingleLine line = String.concat "" (List.map htmlTokenToString line)
+    let convertSingleLine line = String.concat "" (List.map HtmlToken.to_string line)
     in Seq.map convertSingleLine (convertLinesToTokens lines)

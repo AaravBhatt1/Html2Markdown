@@ -1,4 +1,4 @@
-# dune exec Html2Markdown /Users/aaravbhatt/Code/Html2Markdown/bin/markdown.md
+# dune build
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Shared cache location: /Users/aaravbhatt/.cache/dune/db
@@ -13,4 +13,4 @@
 #  ; build_dir = In_build_dir "default"
 #  ; instrument_with = []
 #  }
-$ /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -config > /var/folders/62/hc79thkd5d17f4fplqdchx040000gn/T/dune_895dcb_output
+$ /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -config > /var/folders/62/hc79thkd5d17f4fplqdchx040000gn/T/dune_a56dfe_output
