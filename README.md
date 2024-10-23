@@ -4,10 +4,10 @@ This is a project I've made to help me learn OCaml, which I am studying at unive
 It takes in a markdown file and then converts it to HTML code.
 ## Features
 So far, it works with:
--Bold text
--Italic text
--Headings
--Unordered lists
+ * Bold text
+ * Italic text
+ * Headings
+ * Unordered lists
 However, I plan on adding more features such as links and ordered lists soon.
 ## Using this project
 To use this project, fork it and run it in a terminal using `dune exec [filepath]`.
