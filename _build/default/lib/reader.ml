@@ -74,7 +74,7 @@ let parseLineStart = function
       | rest -> acc, List.tl rest
     in let headerVal, restOfLine = countHeader 1 xn
     in Some (MarkdownLineStarter.Header headerVal), restOfLine
-  | '-' :: xn -> Some (MarkdownLineStarter.UnorderedListItem), xn
+  | ' ' :: '*' :: ' ' :: xn -> Some (MarkdownLineStarter.UnorderedListItem), xn
   | xn -> None, xn
 
 module TextToken = struct
