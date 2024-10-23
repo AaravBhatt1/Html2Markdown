@@ -141,6 +141,34 @@ module ParseLineTests = struct
   ]
 end
 
+module ConvertSeqCharToSeqLineTests = struct
+  let input1 = String.to_seq "Line 1\nLine 2\nLine 3"
+  let input2 = String.to_seq "Single line"
+  let input3 = String.to_seq ""
+
+  let test1 () =
+    let result = convertSeqCharToSeqLine input1 |> List.of_seq in
+    check (list string) "Multiple lines"
+      ["Line 1"; "Line 2"; "Line 3"]
+      (result |> List.map (fun chars -> chars |> List.to_seq |> String.of_seq))
+
+  let test2 () =
+    let result = convertSeqCharToSeqLine input2 |> List.of_seq in
+    check (list string) "Single line"
+      ["Single line"]
+      (result |> List.map (fun chars -> chars |> List.to_seq |> String.of_seq))
+
+  let test3 () =
+    let result = convertSeqCharToSeqLine input3 |> List.of_seq in
+    check (list (list char)) "Empty input" [] result
+
+  let tests = [
+    "Convert multiple lines", `Quick, test1;
+    "Convert single line", `Quick, test2;
+    "Convert empty input", `Quick, test3;
+  ]
+end
+
 let () =
   run "Html2Markdown Tests" [
     "Getting the first line", GetFirstLineTests.tests;
@@ -148,4 +176,5 @@ let () =
     "Checking if text can be tokenized correctly", TokenizeTextTests.tests;
     "Checking if tokenized text can be parsed correctly", ParseTokensTests.tests;
     "Checking if a single line of markdown can be parsed", ParseLineTests.tests;
+    "Checking if sequence of characters can be converted to sequence of lines", ConvertSeqCharToSeqLineTests.tests;
   ]

@@ -1,9 +1,7 @@
-open Seq
-
 (* This function takes a seq of characters and gets the first line of it as a list of characters *)
 let getFirstLine (seq : char Seq.t) : char list * char Seq.t =
   let isNotNewLine c = c != '\n'
-  in (Seq.take_while isNotNewLine seq |> List.of_seq), (Seq.drop_while isNotNewLine seq |> drop 1)
+  in (Seq.take_while isNotNewLine seq |> List.of_seq), (Seq.drop_while isNotNewLine seq |> Seq.drop 1)
 
 module MarkdownLineStarter = struct
   type t =
@@ -129,9 +127,12 @@ let parseLine line =
   in let parsedText = parseTokens tokenizedText
   in MarkdownLine.MarkdownLine (starter, parsedText)
 
-(* let parseText text =
-  let text = String.to_seq text
-  in let rec parseLines = function
-    | [], _ -> []
-    | line, rest -> parseLine line :: parseLines (getFirstLine rest)
-  in parseLines (getFirstLine text)*)
+let rec convertSeqCharToSeqLine charSeq = match charSeq () with
+  | Seq.Nil -> Seq.empty
+  | _ -> match getFirstLine charSeq with
+    | line, rest -> Seq.cons line (convertSeqCharToSeqLine rest)
+
+(* TODO: unit test this function *)
+let parseText text = text
+  |> convertSeqCharToSeqLine
+  |> (Seq.map parseLine)

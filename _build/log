@@ -1,4 +1,4 @@
-# dune test
+# dune exec Html2Markdown /Users/aaravbhatt/Code/Html2Markdown/bin/markdown.md
 # OCAMLPARAM: unset
 # Shared cache: disabled
 # Shared cache location: /Users/aaravbhatt/.cache/dune/db
@@ -13,33 +13,4 @@
 #  ; build_dir = In_build_dir "default"
 #  ; instrument_with = []
 #  }
-$ /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -config > /var/folders/62/hc79thkd5d17f4fplqdchx040000gn/T/dune_95780f_output
-$ (cd _build/default/test && ./test.exe)
-> Testing `Html2Markdown Tests'.
-> This run has ID `NBOZ0B0I'.
->
->   [OK]          Getting the first line                                       0   getFirstLine returns first line.
->   [OK]          Getting the first line                                       1   getFirstLine returns second line.
->   [OK]          Getting the first line                                       2   getFirstLine returns third line.
->   [OK]          Getting the first line                                       3   getFirstLine returns empty line.
->   [OK]          Checking if it can parse how the line starts                 0   Regular sentence start.
->   [OK]          Checking if it can parse how the line starts                 1   Regular sentence rest.
->   [OK]          Checking if it can parse how the line starts                 2   Header 1 start.
->   [OK]          Checking if it can parse how the line starts                 3   Header 1 rest.
->   [OK]          Checking if it can parse how the line starts                 4   Header 2 start.
->   [OK]          Checking if it can parse how the line starts                 5   Header 2 rest.
->   [OK]          Checking if it can parse how the line starts                 6   Bullet point start.
->   [OK]          Checking if it can parse how the line starts                 7   Bullet point rest.
->   [OK]          Checking if text can be tokenized correctly                  0   Tokenize regular text.
->   [OK]          Checking if text can be tokenized correctly                  1   Tokenize bold text.
->   [OK]          Checking if text can be tokenized correctly                  2   Tokenize italic text.
->   [OK]          Checking if tokenized text can be parsed correctly           0   Parse regular text.
->   [OK]          Checking if tokenized text can be parsed correctly           1   Parse bold text.
->   [OK]          Checking if tokenized text can be parsed correctly           2   Parse italic text.
->   [OK]          Checking if a single line of markdown can be parsed          0   Parse regular sentence.
->   [OK]          Checking if a single line of markdown can be parsed          1   Parse header.
->   [OK]          Checking if a single line of markdown can be parsed          2   Parse bullet point.
->   [OK]          Checking if a single line of markdown can be parsed          3   Parse empty line.
->
-> Full test results in `~/Code/Html2Markdown/_build/default/test/_build/_tests/Html2Markdown Tests'.
-> Test Successful in 0.004s. 22 tests run.
+$ /Users/aaravbhatt/.opam/default/bin/ocamlc.opt -config > /var/folders/62/hc79thkd5d17f4fplqdchx040000gn/T/dune_895dcb_output
