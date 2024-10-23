@@ -86,7 +86,7 @@ module TokenizeTextTests = struct
   ]
 end
 
-module ParseLineTests = struct
+module ParseTokensTests = struct
   open MarkdownText
   open TextToken
 
@@ -111,10 +111,41 @@ module ParseLineTests = struct
   ]
 end
 
+module ParseLineTests = struct
+  open MarkdownLine
+  open MarkdownText
+  open MarkdownLineStarter
+
+  let input1 = "This is a regular sentence"
+  let input2 = "## This is a header"
+  let input3 = "-This is a bullet point with *bold* text"
+  let input4 = ""
+
+  let expOutput1 = MarkdownLine (None, [NormalText "This is a regular sentence"])
+  let expOutput2 = MarkdownLine (Some (Header 2), [NormalText "This is a header"])
+  let expOutput3 = MarkdownLine (Some UnorderedListItem, [NormalText "This is a bullet point with "; BoldText "bold"; NormalText " text"])
+  let expOutput4 = MarkdownLine (None, [])
+
+  let testable_MarkdownLine = testable MarkdownLine.pp MarkdownLine.equal
+
+  let test1 () = check testable_MarkdownLine "Regular" expOutput1 (parseLine (input1 |> String.to_seq |> List.of_seq))
+  let test2 () = check testable_MarkdownLine "Header" expOutput2 (parseLine (input2 |> String.to_seq |> List.of_seq))
+  let test3 () = check testable_MarkdownLine "Bullet point" expOutput3 (parseLine (input3 |> String.to_seq |> List.of_seq))
+  let test4 () = check testable_MarkdownLine "Empty" expOutput4 (parseLine (input4 |> String.to_seq |> List.of_seq))
+
+  let tests = [
+    "Parse regular sentence", `Quick, test1;
+    "Parse header", `Quick, test2;
+    "Parse bullet point", `Quick, test3;
+    "Parse empty line", `Quick, test4;
+  ]
+end
+
 let () =
   run "Html2Markdown Tests" [
     "Getting the first line", GetFirstLineTests.tests;
     "Checking if it can parse how the line starts", ParseLineStartTests.tests;
     "Checking if text can be tokenized correctly", TokenizeTextTests.tests;
-    "Checking if tokenized text can be parsed correctly", ParseLineTests.tests;
+    "Checking if tokenized text can be parsed correctly", ParseTokensTests.tests;
+    "Checking if a single line of markdown can be parsed", ParseLineTests.tests;
   ]

@@ -1,9 +1,9 @@
 open Seq
 
 (* This function takes a seq of characters and gets the first line of it as a list of characters *)
-let getFirstLine seq =
+let getFirstLine (seq : char Seq.t) : char list * char Seq.t =
   let isNotNewLine c = c != '\n'
-  in (take_while isNotNewLine seq |> List.of_seq), (drop_while isNotNewLine seq |> drop 1)
+  in (Seq.take_while isNotNewLine seq |> List.of_seq), (Seq.drop_while isNotNewLine seq |> drop 1)
 
 module MarkdownLineStarter = struct
   type t =
@@ -46,7 +46,27 @@ module MarkdownText = struct
     Format.fprintf fmt "%s" (to_string v)
 end
 
-type markdownLine = MarkdownLine of MarkdownLineStarter.t option * MarkdownText.t list
+module MarkdownLine = struct
+  type t = MarkdownLine of MarkdownLineStarter.t option * MarkdownText.t list
+
+  let to_string (MarkdownLine (starter, texts)) =
+    let starter_str = match starter with
+      | Some s -> MarkdownLineStarter.to_string s ^ " "
+      | None -> ""
+    in
+    let texts_str = List.map MarkdownText.to_string texts |> String.concat ", "
+    in
+    "MarkdownLine(" ^ starter_str ^ "[" ^ texts_str ^ "])"
+
+  let equal (MarkdownLine (s1, t1)) (MarkdownLine (s2, t2)) =
+    Option.equal MarkdownLineStarter.equal s1 s2
+    && List.equal MarkdownText.equal t1 t2
+
+  let pp fmt (MarkdownLine (starter, texts)) =
+    Format.fprintf fmt "MarkdownLine(%a, %a)"
+      (Format.pp_print_option MarkdownLineStarter.pp) starter
+      (Format.pp_print_list MarkdownText.pp) texts
+end
 
 (* This function gets the markdownLineStarter of the line *)
 let parseLineStart = function
@@ -102,3 +122,16 @@ let rec parseTokens =
     | RegularTextToken t :: xn -> MarkdownText.NormalText t :: parseTokens xn
     | [] -> []
     | _ -> failwith "Parsing Error"
+
+let parseLine line =
+  let starter, rest = parseLineStart line
+  in let tokenizedText = tokenizeText rest
+  in let parsedText = parseTokens tokenizedText
+  in MarkdownLine.MarkdownLine (starter, parsedText)
+
+(* let parseText text =
+  let text = String.to_seq text
+  in let rec parseLines = function
+    | [], _ -> []
+    | line, rest -> parseLine line :: parseLines (getFirstLine rest)
+  in parseLines (getFirstLine text)*)
